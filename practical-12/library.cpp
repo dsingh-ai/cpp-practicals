@@ -78,6 +78,7 @@ public:
 
     void giveBack(int id) {
         Book& b = find(id);
+        if (!b.isIssued()) throw string("This book was not issued");
         b.setIssued(false);
         cout << "Returned: " << b.getTitle() << endl;
     }
