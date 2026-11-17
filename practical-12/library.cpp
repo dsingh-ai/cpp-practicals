@@ -57,6 +57,18 @@ public:
         for (auto& b : books) b.show();
     }
 
+    void search(string word) {
+        bool found = false;
+        for (auto& b : books) {
+            if (b.getTitle().find(word) != string::npos ||
+                b.getAuthor().find(word) != string::npos) {
+                b.show();
+                found = true;
+            }
+        }
+        if (!found) cout << "Nothing found for \"" << word << "\"" << endl;
+    }
+
     void issue(int id) {
         Book& b = find(id);
         if (b.isIssued()) throw string("Book is already issued");
@@ -105,7 +117,7 @@ int main() {
     string t, a;
 
     while (true) {
-        cout << "\n1.Add 2.List 3.Issue 4.Return 0.Save & Exit\nChoice: ";
+        cout << "\n1.Add 2.List 3.Search 4.Issue 5.Return 0.Save & Exit\nChoice: ";
         if (!(cin >> ch)) break;
         try {
             if (ch == 1) {
@@ -115,8 +127,13 @@ int main() {
                 lib.add(id, t, a);
             }
             else if (ch == 2) lib.list();
-            else if (ch == 3) { cout << "Book id: "; cin >> id; lib.issue(id); }
-            else if (ch == 4) { cout << "Book id: "; cin >> id; lib.giveBack(id); }
+            else if (ch == 3) {
+                cout << "Enter title or author: ";
+                getline(cin >> ws, t);
+                lib.search(t);
+            }
+            else if (ch == 4) { cout << "Book id: "; cin >> id; lib.issue(id); }
+            else if (ch == 5) { cout << "Book id: "; cin >> id; lib.giveBack(id); }
             else if (ch == 0) { lib.save(); break; }
             else cout << "Wrong choice" << endl;
         }
